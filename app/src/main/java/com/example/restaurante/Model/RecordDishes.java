@@ -1,12 +1,14 @@
 package com.example.restaurante.Model;
 
 import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
-public class RecordDishes {
+public class RecordDishes  {
     private ArrayList<Dish> dishesList;
     public static final int CODE_OK = 0;
     public static final int CODE_NOT_FOUND = 1;
@@ -43,8 +45,13 @@ public class RecordDishes {
         }
         return null;
     }
+    public Dish get(int position){
+        Dish dish = this.dishesList.get(position);
+        return dish;
+    }
 
     public int modify(Dish dish){
+
         int dishPosition = dishesList.indexOf(dish);
         if(dishPosition == -1) return CODE_NOT_FOUND;
         dishesList.set(dishPosition, dish);
@@ -52,7 +59,7 @@ public class RecordDishes {
     }
 
     public ArrayList getArray() { return dishesList;}
-
+    public void setArray(ArrayList<Dish> dishesList) {this.dishesList = dishesList;}
 
 
 }

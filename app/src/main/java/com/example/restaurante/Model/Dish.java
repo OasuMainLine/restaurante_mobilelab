@@ -1,10 +1,12 @@
 package com.example.restaurante.Model;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Objects;
 
-public class Dish {
+public class Dish implements Parcelable {
     private String id, descripction;
     private double price;
     private Uri image;
@@ -15,6 +17,25 @@ public class Dish {
         this.price = price;
         this.image = image;
     }
+
+    protected Dish(Parcel in) {
+        id = in.readString();
+        descripction = in.readString();
+        price = in.readDouble();
+        image = in.readParcelable(Uri.class.getClassLoader());
+    }
+
+    public static final Creator<Dish> CREATOR = new Creator<Dish>() {
+        @Override
+        public Dish createFromParcel(Parcel in) {
+            return new Dish(in);
+        }
+
+        @Override
+        public Dish[] newArray(int size) {
+            return new Dish[size];
+        }
+    };
 
     public Uri getImage() {
         return image;
@@ -53,7 +74,7 @@ public class Dish {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Dish dish = (Dish) o;
-        return Double.compare(dish.price, price) == 0 && Objects.equals(id, dish.id) && Objects.equals(descripction, dish.descripction) && Objects.equals(image, dish.image);
+        return Objects.equals(id, dish.id);
     }
 
     @Override
@@ -69,5 +90,18 @@ public class Dish {
                 ", price=" + price +
                 ", image=" + image +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(this.id);
+        parcel.writeString(this.descripction);
+        parcel.writeDouble(this.price);
+        parcel.writeParcelable(this.image, i);
     }
 }
